@@ -4,7 +4,8 @@ from typing import Optional
 from enum import Enum
 from fastapi import FastAPI, Header
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
+app.include_router(api_router, prefix="/v1")
 
 
 class DataModel(str, Enum):
@@ -111,3 +112,7 @@ async def api_info():
 @app.get("/api/headers")
 async def header(user_agent: Optional[str] = Header(None)):
     return {"User-Agent": user_agent}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0")
