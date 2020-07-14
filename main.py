@@ -37,7 +37,7 @@ summary = {
     "country": "Philippines",
     "country_code": "PH",
     "current_time": datetime.now(),
-    "cases": data,
+    "cases": get_data(),
     "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines.",
 }
 
