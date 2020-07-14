@@ -2,9 +2,11 @@ from crawler import Crawler
 from datetime import datetime
 from typing import Optional
 from enum import Enum
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, Header, APIRouter
 
 app = FastAPI(docs_url=None, redoc_url=None)
+
+api_router = APIRouter()
 app.include_router(api_router, prefix="/v1")
 
 
