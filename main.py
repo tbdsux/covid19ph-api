@@ -2,12 +2,15 @@ from crawler import Crawler
 from datetime import datetime
 from typing import Optional
 from enum import Enum
-from fastapi import FastAPI, Header, APIRouter
+from fastapi import FastAPI, Header, Request, Depends
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
-api_router = APIRouter()
-app.include_router(api_router, prefix="/v1")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 
 
 class DataModel(str, Enum):
@@ -29,20 +32,11 @@ def get_data():
 
 
 @app.get("/")
-async def root():
-    return {"Info": "PH CoVid-19 Data", "message": "Hello Developer. Have a nice day!"}
+async def root(request: Request, data: dict = Depends(get_data)):
+    return templates.TemplateResponse("index.html", {"request": request, "data": data})
 
 
-summary = {
-    "country": "Philippines",
-    "country_code": "PH",
-    "current_time": datetime.now(),
-    "cases": get_data(),
-    "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines.",
-}
-
-
-@app.get("/cases/{case_name}")
+@app.get("/api/cases/{case_name}")
 async def read_case(case_name: str):
     if case_name == DataModel.confirmed:
         return {
@@ -101,7 +95,13 @@ async def read_case(case_name: str):
         }
 
     elif case_name == DataModel.total:
-        return summary
+        return {
+            "country": "Philippines",
+            "country_code": "PH",
+            "current_time": datetime.now(),
+            "cases": get_data(),
+            "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines.",
+        }
 
     return {"Info": "No Data Found"}
 
@@ -111,11 +111,6 @@ async def api_info():
     return {
         "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines."
     }
-
-
-@app.get("/api/headers")
-async def header(user_agent: Optional[str] = Header(None)):
-    return {"User-Agent": user_agent}
 
 
 if __name__ == "__main__":

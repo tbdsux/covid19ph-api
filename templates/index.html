@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoVid-19 PH Data - Statistics</title>
+    <!-- icon (credits: https://icons8.com/icon/14822/coronavirus ) -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/coronavirus.png">
+    <!-- style -->
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&family=Sora:wght@200;400;600;800&display=swap" rel="stylesheet">
+</head>
+<!-- background image (credits: https://www.paymentsjournal.com) -->
+<body class="antialiased" style="background: url('https://www.paymentsjournal.com/wp-content/uploads/2020/03/coronavirus-4914028-scaled.jpg') rgba(0, 0, 0, 0.3); background-blend-mode: multiply; background-size: cover; background-position: right;">
+    <div class="h-full w-11/12 md:w-5/6 lg:w-2/3 mx-auto p-5 bg-white my-5">
+        <div class="text-center mx-auto">
+            <h1 class="tracking-wide"><span class="text-3xl font-extrabold"><span class="text-red-600">CoVid-19</span> <span class="text-blue-500">PH</span> Data | </span><span class="text-2xl ml-1 font-semibold">Statistics</span></h1>
+            <div class="mt-3">
+                <!-- confirmed cases -->
+                <div class="bg-yellow-500 px-4 py-6 shadow-md">
+                    <h2 class="text-5xl font-extrabold text-gray-900">{{ "{:,}".format(data['confirmed']).replace(',', ', ') }}</h2>
+                    <h4 class="text-lg uppercase font-thin">Confirmed</h4>
+                </div>
+                <div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-1">
+                    <div class="mx-1 bg-red-500 px-4 py-6 shadow-md">
+                        <h2 class="text-4xl font-extrabold text-gray-900">{{ "{:,}".format(data['active']).replace(',', ', ') }}</h2>
+                        <h4 class="text-lg uppercase font-thin">Active</h4>
+                    </div>
+                    <div class="mx-1 bg-green-500 px-4 py-6 shadow-md">
+                        <h2 class="text-4xl font-extrabold text-gray-900">{{ "{:,}".format(data['recovered']).replace(',', ', ') }}</h2>
+                        <h4 class="text-lg uppercase font-thin">Recovered</h4>
+                    </div>
+                    <div class="mx-1 bg-gray-500 px-4 py-6 shadow-md">
+                        <h2 class="text-4xl font-extrabold text-gray-900">{{ "{:,}".format(data['deaths']).replace(',', ', ') }}</h2>
+                        <h4 class="text-lg uppercase font-thin">Deaths</h4>
+                    </div>
+                </div>
+                <div class="mt-3 flex grid grid-cols-2 md:grid-cols-4 gap-1">
+                    <div class="bg-gray-100 mx-1 py-4 px-2">
+                        <h2 class="text-3xl font-semibold">{{ "{:,}".format(data['suspected']).replace(',', ', ') }}</h2>
+                        <h4 class="font-thin">Suspected</h4>
+                    </div>
+                    <div class="bg-gray-100 mx-1 py-4 px-2">
+                        <h2 class="text-3xl font-semibold">{{ "{:,}".format(data['severe']).replace(',', ', ') }}</h2>
+                        <h4 class="font-thin">Severe</h4>
+                    </div>
+                    <div class="bg-gray-100 mx-1 py-4 px-2">
+                        <h2 class="text-3xl font-semibold">{{ "{:,}".format(data['critical']).replace(',', ', ') }}</h2>
+                        <h4 class="font-thin">Critical</h4>
+                    </div>
+                    <div class="bg-gray-100 mx-1 py-4 px-2">
+                        <h2 class="text-3xl font-semibold">{{ data['fatality_rate'] }}%</h2>
+                        <h4 class="font-thin">Fatality Rate</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- other links -->
+            <div class="mt-4">
+                <a href="https://ncovtracker.doh.gov.ph/" target="_blank" class="underline hover:text-blue-500">DOH NCov Tracker</a>
+            </div>
+            
+            <hr class="mt-5">
+            <!-- basic api tutorial -->
+            <div class="mt-5">
+                <h3>Simple API</h3>
+                <div class="text-left">
+                    <div class="">
+                        <p class="underline py-1">Get the summary of all cases</p>
+                        <div class="bg-gray-100">
+                            <div class="p-2 bg-gray-400 flex justify-start items-center">
+                                <h5 class="px-3 text-green-500 uppercase font-semibold rounded-full">GET</h5>
+                                <a href="{{ url_for('read_case', case_name='all') }}" class="ml-3 hover:text-blue-500">/api/cases/all</a>
+                            </div>
+                            <div>
+                                <p class="text-sm p-2 text-sm">Output:</p>
+                                <div class="">
+                                    <pre class="w-full overflow-x-scroll mx-auto bg-gray-200 p-2 prettyprint font-mono text-xs">
+ {
+    "country": "Philippines",
+    "country_code": "PH",
+    "current_time": 2020-07-16 12:15:09.578838,
+    "cases": {
+        "confirmed": 57545, 
+        "active": 35483, 
+        "suspected": 38359, 
+        "severe": 149, 
+        "critical": 106, 
+        "recovered": 20459, 
+        "deaths": 1603, 
+        "fatality_rate": 2.79
+    },
+    "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines."
+ }
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="py-1"><span class="underline">Get the total of a specific case.</span> <br><span class="font-thin">| Case Names: <span class="bg-gray-200">confirmed</span> <span class="bg-gray-200">active</span> <span class="bg-gray-200">suspected</span> <span class="bg-gray-200">severe</span> <span class="bg-gray-200">critical</span> <span class="bg-gray-200">recovered</span> <span class="bg-gray-200">deaths</span> <span class="bg-gray-200">fatality_rate</span></span></p>
+                        <div class="bg-gray-100">
+                            <div class="p-2 bg-gray-400 flex justify-between items-center">
+                                <div class="flex justify-start items-center">
+                                    <h5 class="px-3 text-green-500 uppercase font-semibold rounded-full">GET</h5>
+                                    <a href="#" class="ml-3 hover:text-blue-500">/api/cases/confirmed</a>
+                                </div>
+                                <p href="{{ url_for('read_case', case_name='confirmed') }}" class="ml-3">/api/cases/{case_name}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm p-2 text-sm">Output:</p>
+                                <div class="">
+                                    <pre class="w-full overflow-x-scroll bg-gray-200 p-2 prettyprint font-mono text-xs">
+ {
+    "Info": "PH CoVid-19 Data",
+    "Confirmed_Cases": {
+        "total": 57545
+    },
+    "current_time": "2020-07-14T17:16:37.248935"
+ }
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="underline py-1">API Information</p>
+                        <div class="bg-gray-100">
+                            <div class="p-2 bg-gray-400 flex justify-start items-center">
+                                <h5 class="px-3 text-green-500 uppercase font-semibold rounded-full">GET</h5>
+                                <a href="{{ url_for('api_info') }}" class="ml-3 hover:text-blue-500">/api</a>
+                            </div>
+                            <div>
+                                <p class="text-sm p-2 text-sm">Output:</p>
+                                <div class="">
+                                    <pre class="w-full overflow-x-scroll bg-gray-200 p-2 prettyprint font-mono text-xs">
+ {
+    "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines."
+ }
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- footer -->
+            <footer class="mt-4">
+                <p class="text-sm">Made By: <a href="https://github.com/TheBoringDude" title="" class="font-bold hover:text-red-500 tracking-wide">TheBoringDude</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</body>
+</html>
