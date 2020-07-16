@@ -103,9 +103,9 @@
                             <div class="p-2 bg-gray-400 flex justify-between items-center">
                                 <div class="flex justify-start items-center">
                                     <h5 class="px-3 text-green-500 uppercase font-semibold rounded-full">GET</h5>
-                                    <a href="#" class="ml-3 hover:text-blue-500">/api/cases/confirmed</a>
+                                    <a href="{{ url_for('read_case', case_name='confirmed') }}" class="ml-3 hover:text-blue-500">/api/cases/confirmed</a>
                                 </div>
-                                <p href="{{ url_for('read_case', case_name='confirmed') }}" class="ml-3">/api/cases/{case_name}</p>
+                                <p class="ml-3">/api/cases/{case_name}</p>
                             </div>
                             <div>
                                 <p class="text-sm p-2 text-sm">Output:</p>
