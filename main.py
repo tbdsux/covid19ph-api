@@ -33,7 +33,7 @@ def get_data():
 
 @app.get("/")
 async def root(request: Request, data: dict = Depends(get_data)):
-    return templates.TemplateResponse("index.html", {"request": request, "data": data})
+    return templates.TemplateResponse("index.html", {"request": request, "data": data, "datetime": datetime.now()})
 
 
 @app.get("/api/cases/{case_name}")
