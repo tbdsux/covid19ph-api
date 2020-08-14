@@ -45,7 +45,8 @@ class Crawler:
         x = df.drop([0, 1, 2, 3, 4, 5, 6, 7, 16, 17, 18])
 
         # get the datas only (list & convert each value to int / float)
-        vals = [self.format_data(float(i.strip("%"))) for i in list(x.iloc[:, 1])]
+        vals = [self.format_data(float(i.strip("%")))
+                for i in list(x.iloc[:, 1])]
 
         # return the output
         return dict(zip(self.__keys, vals))
