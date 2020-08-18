@@ -15,7 +15,6 @@ class Crawler:
             "confirmed",
             "active",
             "suspected",
-            "severe",
             "critical",
             "recovered",
             "deaths",
