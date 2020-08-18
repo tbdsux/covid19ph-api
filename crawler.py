@@ -14,7 +14,7 @@ class Crawler:
         self.__keys = [
             "confirmed",
             "active",
-            "suspected",
+            "severe",
             "critical",
             "recovered",
             "deaths",
