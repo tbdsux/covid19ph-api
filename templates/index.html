@@ -37,11 +37,7 @@
                         <h4 class="text-lg uppercase font-thin">Deaths</h4>
                     </div>
                 </div>
-                <div class="mt-3 flex grid grid-cols-2 md:grid-cols-4 gap-1">
-                    <div class="bg-gray-100 mx-1 py-4 px-2">
-                        <h2 class="text-3xl font-semibold">{{ "{:,}".format(data['suspected']).replace(',', ', ') }}</h2>
-                        <h4 class="font-thin">Suspected</h4>
-                    </div>
+                <div class="mt-3 flex grid grid-cols-2 sm:grid-cols-3 gap-1">
                     <div class="bg-gray-100 mx-1 py-4 px-2">
                         <h2 class="text-3xl font-semibold">{{ "{:,}".format(data['severe']).replace(',', ', ') }}</h2>
                         <h4 class="font-thin">Severe</h4>
@@ -84,7 +80,6 @@
     "cases": {
         "confirmed": 57545, 
         "active": 35483, 
-        "suspected": 38359, 
         "severe": 149, 
         "critical": 106, 
         "recovered": 20459, 
@@ -99,7 +94,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <p class="py-1"><span class="underline">Get the total of a specific case.</span> <br><span class="font-thin">| Case Names: <span class="bg-gray-200">confirmed</span> <span class="bg-gray-200">active</span> <span class="bg-gray-200">suspected</span> <span class="bg-gray-200">severe</span> <span class="bg-gray-200">critical</span> <span class="bg-gray-200">recovered</span> <span class="bg-gray-200">deaths</span> <span class="bg-gray-200">fatality_rate</span></span></p>
+                        <p class="py-1"><span class="underline">Get the total of a specific case.</span> <br><span class="font-thin">| Case Names: <span class="bg-gray-200">confirmed</span> <span class="bg-gray-200">active</span> <span class="bg-gray-200">severe</span> <span class="bg-gray-200">critical</span> <span class="bg-gray-200">recovered</span> <span class="bg-gray-200">deaths</span> <span class="bg-gray-200">fatality_rate</span></span></p>
                         <div class="bg-gray-100">
                             <div class="p-2 bg-gray-400 flex justify-between items-center">
                                 <div class="flex justify-start items-center">
