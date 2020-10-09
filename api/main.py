@@ -25,13 +25,14 @@ class DataModel(str, Enum):
 
 
 # function
-def get_data():
+async def get_data():
     crawler = Crawler()
-    return crawler.get_all()
+    return await crawler.get_all()
 
 
 @app.get("/")
-async def root(request: Request, data: dict = Depends(get_data)):
+async def root(request: Request):
+    data = await get_data()
     return templates.TemplateResponse("index.html", {"request": request, "data": data, "datetime": datetime.now()})
 
 

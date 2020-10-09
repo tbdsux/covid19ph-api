@@ -24,7 +24,7 @@ class Crawler:
 
         self.table = soup.find("table", attrs={"class": __tb_Name})
 
-    def get_all(self):
+    async def get_all(self):
         # remove some unnecessary tags
         for sup in self.table.find_all("sup"):
             sup.decompose()  # remove <sup></sup> tags
