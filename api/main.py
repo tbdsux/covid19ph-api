@@ -1,6 +1,5 @@
-from crawler import Crawler
+from .crawler import Crawler
 from datetime import datetime
-from typing import Optional
 from enum import Enum
 from fastapi import FastAPI, Header, Request, Depends
 from fastapi.staticfiles import StaticFiles
@@ -111,7 +110,3 @@ async def api_info():
     return {
         "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines."
     }
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0")
