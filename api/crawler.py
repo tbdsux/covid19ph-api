@@ -1,8 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-import pandas as pd
-import json
-
 
 class Crawler:
     def __init__(self, store_mode="NONE"):
@@ -34,21 +31,16 @@ class Crawler:
         for span in self.table.find_all("span"):
             span.decompose()  # remove <span></span> tags
 
-        # remove other things maually
-        f = str(self.table)
+        vals = []
 
-        # convert [table > list > dataframe]
-        df = pd.DataFrame(pd.read_html(f)[0])
+        # get all the values from the <td>
+        for i in self.table.find_all("td"):
+            vals.append(i.get_text())
 
-        # drop the unnecessary rows
-        x = df.drop([0, 1, 2, 3, 4, 5, 6, 7, 8, 16, 17])
+        # get only the necessary values
+        data = [self.format_data(float(i.strip("%").replace(",", ""))) for i in vals[9:16]]
 
-        # get the datas only (list & convert each value to int / float)
-        vals = [self.format_data(float(i.strip("%")))
-                for i in list(x.iloc[:, 1])]
-
-        # return the output
-        return dict(zip(self.__keys, vals))
+        return dict(zip(self.__keys, data))
 
     # reconvert numbers with no decimal to int
     def format_data(self, num):
