@@ -1,9 +1,13 @@
 from .crawler import Crawler
 from datetime import datetime
+import pytz
 from enum import Enum
 from fastapi import FastAPI, Header, Request, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+
+# import the database handler
+from .db import DB
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
@@ -111,3 +115,21 @@ async def api_info():
     return {
         "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines."
     }
+
+@app.get("/crawler")
+async def crawl_data():
+    data = await get_data()
+
+    # initialize the content to be stored in the database
+    content = {}
+    content['data'] = data
+    content['crawl_time'] = datetime.now(tz=pytz.timezone('Asia/Manila'))
+
+    store = await DB.store_data(content)
+
+    # if the return is true, return a success message
+    if store:
+        return {"Crawl Info": "The crawler was successful and the was stored to the database successfully."}
+    
+    # this is the default return message
+    return {"Crawl Info": "There was a problem with storing the data to the database!"}
