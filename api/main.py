@@ -28,7 +28,7 @@ class DataModel(str, Enum):
     total = "all"
 
 
-# function
+# crawl the website: 
 async def get_data():
     crawler = Crawler()
     return await crawler.get_all()
@@ -36,65 +36,73 @@ async def get_data():
 
 @app.get("/")
 async def root(request: Request):
-    data = await get_data()
-    return templates.TemplateResponse("index.html", {"request": request, "data": data, "datetime": datetime.now()})
+    data = await DB.get_data()
+    return templates.TemplateResponse("index.html", {"request": request, "data": data["data"], "datetime": data["crawl_time"]})
 
 
 @app.get("/api/cases/{case_name}")
 async def read_case(case_name: str):
+    data = await DB.get_data()
     if case_name == DataModel.confirmed:
         return {
             "Info": "PH CoVid-19 Data",
-            "Confirmed_Cases": {"total": get_data()["confirmed"]},
+            "Confirmed_Cases": {"total": data["data"]["confirmed"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.active:
         return {
             "Info": "PH CoVid-19 Data",
-            "Active_Cases": {"total": get_data()["active"]},
+            "Active_Cases": {"total": data["data"]["active"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.suspected:
         return {
             "Info": "PH CoVid-19 Data",
-            "Suspected_Cases": {"total": get_data()["suspected"]},
+            "Suspected_Cases": {"total": data["data"]["suspected"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.severe:
         return {
             "Info": "PH CoVid-19 Data",
-            "Severe_Cases": {"total": get_data()["severe"]},
+            "Severe_Cases": {"total": data["data"]["severe"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.critical:
         return {
             "Info": "PH CoVid-19 Data",
-            "Critical_Cases": {"total": get_data()["critical"]},
+            "Critical_Cases": {"total": data["data"]["critical"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.recovered:
         return {
             "Info": "PH CoVid-19 Data",
-            "Recovered_Cases": {"total": get_data()["recovered"]},
+            "Recovered_Cases": {"total": data["data"]["recovered"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.deaths:
         return {
             "Info": "PH CoVid-19 Data",
-            "Deaths_Cases": {"total": get_data()["deaths"]},
+            "Deaths_Cases": {"total": data["data"]["deaths"]},
             "current_time": datetime.now(),
         }
 
     elif case_name == DataModel.fatality_rate:
         return {
             "Info": "PH CoVid-19 Data",
-            "Fatality_Rate": {"total": get_data()["fatality_rate"]},
+            "Fatality_Rate": {"total": data["data"]["fatality_rate"]},
+            "as_of": data["crawl_time"],
             "current_time": datetime.now(),
         }
 
@@ -103,7 +111,8 @@ async def read_case(case_name: str):
             "country": "Philippines",
             "country_code": "PH",
             "current_time": datetime.now(),
-            "cases": get_data(),
+            "as_of": data["crawl_time"],
+            "cases": data["data"],
             "api_info": "This is just a simple API on the Summary of Cases of COVID-19 in the Philippines.",
         }
 
