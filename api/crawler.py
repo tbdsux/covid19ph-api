@@ -38,7 +38,7 @@ class Crawler:
             vals.append(i.get_text())
 
         # get only the necessary values
-        data = [self.format_data(float(i.strip("%").replace(",", ""))) for i in vals[9:16]]
+        data = [self.format_data(float(i.strip("%").replace(",", ""))) for i in self.check_data(vals[9:16])]
 
         return dict(zip(self.__keys, data))
 
@@ -48,3 +48,7 @@ class Crawler:
             return int(num)
         else:
             return num
+
+    # check the data for parsing
+    def check_data(self, data):
+        return [i.split(" ")[0] for i in data]
